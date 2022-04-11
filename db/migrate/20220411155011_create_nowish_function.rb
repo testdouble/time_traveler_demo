@@ -2,6 +2,14 @@ class CreateNowishFunction < ActiveRecord::Migration[7.0]
   def change
     reversible do |dir|
       dir.up do
+        # Written to mimic the shape of `pg_catalog.now()':
+        #
+        # CREATE OR REPLACE FUNCTION pg_catalog.now()
+        #  RETURNS timestamp with time zone
+        #  LANGUAGE internal
+        #  STABLE PARALLEL SAFE STRICT
+        # AS $function$now$function$
+        #
         execute <<~SQL
           CREATE OR REPLACE FUNCTION public.nowish()
           RETURNS timestamp with time zone
