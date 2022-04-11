@@ -20,6 +20,7 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  schema_search_path: 'public,non_production,pg_catalog'
 
 development:
   <<: *default
@@ -84,3 +85,5 @@ production:
   database: time_traveler_production
   username: time_traveler
   password: <%= ENV["TIME_TRAVELER_DATABASE_PASSWORD"] %>
+  schema_search_path: 'public'
+

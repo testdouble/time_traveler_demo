@@ -2,8 +2,11 @@ class CreateNowishFunction < ActiveRecord::Migration[7.0]
   def change
     reversible do |dir|
       dir.up do
+        # Create a schema that we'll add to every pre'prod environment's path:
+        execute "create schema non_production"
+
         execute <<~SQL
-          CREATE OR REPLACE FUNCTION public.nowish()
+          CREATE OR REPLACE FUNCTION non_production.now()
           RETURNS timestamp with time zone
           AS
           $$
@@ -19,7 +22,8 @@ class CreateNowishFunction < ActiveRecord::Migration[7.0]
       end
 
       dir.down do
-        execute "drop function public.nowish()"
+        execute "drop function non_production.now()"
+        execute "drop schema non_production"
       end
     end
   end
