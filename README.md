@@ -90,3 +90,9 @@ even a relatively complex app or test can be reliably time-traveled, so long as
 each reference to the current time in one's database queries, views, and
 procedures can be modified to instead call a single wrapper function like
 `nowish()`.
+
+This repo also contains a demonstration of an alternative approach in a
+[shadowing-builtin-now-function](https://github.com/testdouble/time_traveler_demo/tree/shadowing-builtin-now-function)
+branch, which shadows the `pg_catalog.now()` function in pre-production
+environments, but will call through to the real one (see commit messages for
+caveats and risks that might entail).
