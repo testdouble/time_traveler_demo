@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+PS4='[script/test:${LINENO}] $ '
+set -euo pipefail
+set -x
+
+bundle
+bin/rake db:migrate
+
