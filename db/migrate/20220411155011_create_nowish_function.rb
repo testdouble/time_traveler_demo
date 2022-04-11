@@ -5,6 +5,14 @@ class CreateNowishFunction < ActiveRecord::Migration[7.0]
         # Create a schema that we'll add to every pre'prod environment's path:
         execute "create schema non_production"
 
+        # Written to mimic the shape of `pg_catalog.now()':
+        #
+        # CREATE OR REPLACE FUNCTION pg_catalog.now()
+        #  RETURNS timestamp with time zone
+        #  LANGUAGE internal
+        #  STABLE PARALLEL SAFE STRICT
+        # AS $function$now$function$
+        #
         execute <<~SQL
           CREATE OR REPLACE FUNCTION non_production.now()
           RETURNS timestamp with time zone
