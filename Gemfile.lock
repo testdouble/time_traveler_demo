@@ -180,6 +180,7 @@ GEM
       sprockets (>= 3.0.0)
     strscan (3.0.1)
     thor (1.2.1)
+    timecop (0.9.5)
     timeout (0.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -212,6 +213,7 @@ DEPENDENCIES
   rails (~> 7.0.2, >= 7.0.2.3)
   selenium-webdriver
   sprockets-rails
+  timecop
   tzinfo-data
   web-console
   webdrivers
