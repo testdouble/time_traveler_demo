@@ -8,7 +8,9 @@ To get started, clone the repo and run:
 $ ./script/setup
 ```
 
-Then to run the server:
+## Traveling through time
+
+Let's start by running the server:
 
 ```sh
 $ ./script/server
@@ -19,8 +21,6 @@ simulator that will allow you to create and destroy a pet. Go ahead and create
 one. You should see a message like:
 
 > You have a pet named Charles and it was born less than a minute ago
-
-## Traveling through time
 
 Now, let's travel through time! Quit your server and then set an environment
 variable that Ruby can parse as a time. For example:
