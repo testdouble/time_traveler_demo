@@ -10,9 +10,9 @@ $ ./script/setup
 
 ## Traveling through time
 
-We're going to use this demo app to track moon landings (and the reason we need
-to travel through time to test it out is because humans haven't been landing on
-the moon a whole lot recently).
+We're going to use this demo app to track moon landings, but because humans
+haven't been landing on the moon very often lately, we need to to travel through
+time to populate our database.
 
 Let's start by running the server:
 
@@ -34,16 +34,17 @@ You'll see that the current timestamp determines the moon landing time (and
 worth noting that it's the _database_ that's populating this default as opposed
 to Rails).
 
-Ok, click `Delete` the record and create a few **real** moon landings.
+Click `Delete` under the record and get ready to record a few **real** moon
+landings.
 
 To do this, first stop the server and then start it again, this time with a
-`TRAVEL_TO` environment variable set for the time of the Apollo 11 landing:
+`TRAVEL_TO` environment variable set for the date of the Apollo 11 landing:
 
 ```sh
 $ TRAVEL_TO=1969-07-20 ./script/server
 ```
 
-And create a moon landing named "Apollo 11". In fact, try adding [a few more
+Now create a moon landing named "Apollo 11". In fact, try adding [a few more
 moon
 landings](https://en.wikipedia.org/wiki/Moon_landing#Human_Moon_landings_(1969–1972))
 by repeating this process of time-traveling to the intended date and creating a
@@ -72,8 +73,8 @@ result in a final lineup of moon landings like this:
 It's very common to find either
 [timecop](https://github.com/travisjeffery/timecop) or
 [ActiveSupport::Testing::TimeHelpers](https://api.rubyonrails.org/v7.0.1/classes/ActiveSupport/Testing/TimeHelpers.html)
-in use by a Rails test suite that needs to travel the application server to a
-different time in order to exercise certain behaviors. A limitation of this
+in use by a Rails test suite in order to manipulate the application's perception
+of time in order to exercise certain behaviors. A limitation of this
 approach is that anything outside the current Ruby process will not have shifted
 its time, so any time-related coordination between the system and external
 services may behave unrealistically. The most common external service a Rails
@@ -82,9 +83,9 @@ ways to fake time.
 
 In this (admittedly trivial) example, Postgres's `now()` function was initially
 set as the default for the `mission_landings.landed_at` column. Because this
-value is set by the database as opposed to the application, it would be
-insufficient to fake the time in Ruby if one wanted to fast-forward or rewind
-the combined application through time.
+value is set by the database as opposed to being passed a SQL query parameter,
+merely faking time in Ruby wouldn't be sufficient! We need to fake the
+column default's answer to what time "now" is.
 
 To solve this, this app defines a [custom PG function called
 nowish()](/db/migrate/20220411155011_create_nowish_function.rb) and uses it
