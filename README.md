@@ -10,40 +10,62 @@ $ ./script/setup
 
 ## Traveling through time
 
+We're going to use this demo app to track moon landings (and the reason we need
+to travel through time to test it out is because humans haven't been landing on
+the moon a whole lot recently).
+
 Let's start by running the server:
 
 ```sh
 $ ./script/server
 ```
 
-If you visit [localhost:3000](http://localhost:3000), you should see a pet
-simulator that will allow you to create and destroy a pet. Go ahead and create
-one. You should see a message like:
+Now visit [localhost:3000](http://localhost:3000).
 
-> You have a pet named Charles and it was born less than a minute ago
+You should see a form like this:
 
-Now, let's travel through time! Quit your server and then set an environment
-variable that Ruby can parse as a time. For example:
+<img width="589" alt="Screen Shot 2022-04-12 at 13 25 10" src="https://user-images.githubusercontent.com/79303/163032504-f6248c67-e7b9-4e8a-a8a2-4750da8b6a48.png">
 
-```
-$ TRAVEL_TO=2099-01-16 ./script/server
-```
+Let's log a fake moon landing named "SpaceZ" and create the record:
 
-If you reload the root page, you should see that Charles is a lot older now:
+<img width="589" alt="Screen Shot 2022-04-12 at 13 27 07" src="https://user-images.githubusercontent.com/79303/163032566-55580502-1c5e-4674-aa10-74cb03f8215e.png">
 
-> You have a pet named Charles and it was born almost 77 years ago
+You'll see that the current timestamp determines the moon landing time (and
+worth noting that it's the _database_ that's populating this default as opposed
+to Rails).
 
-Now destroy Charles and create a new pet named Spot.
+Ok, click `Delete` the record and create a few **real** moon landings.
 
-Quit the server again, this time relaunching it in the distant past:
+To do this, first stop the server and then start it again, this time with a
+`TRAVEL_TO` environment variable set for the time of the Apollo 11 landing:
 
-```
-$ TRAVEL_TO=1999-09-29 ./script/server
+```sh
+$ TRAVEL_TO=1969-07-20 ./script/server
 ```
 
-Reloading the page should now read:
+And create a moon landing named "Apollo 11". In fact, try adding [a few more
+moon
+landings](https://en.wikipedia.org/wiki/Moon_landing#Human_Moon_landings_(1969–1972))
+by repeating this process of time-traveling to the intended date and creating a
+new record.
 
-> You have a pet named Spot and it will be born in over 99 years
+If you restart the app without setting a `TRAVEL_TO` env var, you should see the
+relative dates all correctly faked:
+
+<img width="574" alt="Screen Shot 2022-04-12 at 14 05 29" src="https://user-images.githubusercontent.com/79303/163032627-c3b999fe-0eaf-4812-885e-0291285c47a9.png">
+
+You can travel into the future, too! Suppose we [go
+back](https://www.nasa.gov/press-release/nasa-provides-update-to-astronaut-moon-lander-plans-under-artemis)
+in a few years with an Artemis I lander:
+
+```
+$ TRAVEL_TO=2027-07-15 ./script/server
+```
+
+Adding that record and restarting without the environment variable, should
+result in a final lineup of moon landings like this:
+
+<img width="574" alt="Screen Shot 2022-04-12 at 14 47 18" src="https://user-images.githubusercontent.com/79303/163032958-995cd6e8-80db-4d78-b673-09a12f639f50.png">
 
 ## What's going on here?
 
@@ -59,10 +81,10 @@ app depends on is the database, but databases do not typically expose convenient
 ways to fake time.
 
 In this (admittedly trivial) example, Postgres's `now()` function was initially
-set as the default for the `pets.born_at` column. Because this value is
-set by the database as opposed to the application, it would be insufficient to
-fake the time in Ruby if one wanted to fast-forward or rewind the combined
-application through time.
+set as the default for the `mission_landings.landed_at` column. Because this
+value is set by the database as opposed to the application, it would be
+insufficient to fake the time in Ruby if one wanted to fast-forward or rewind
+the combined application through time.
 
 To solve this, this app defines a [custom PG function called
 nowish()](/db/migrate/20220411155011_create_nowish_function.rb) and uses it

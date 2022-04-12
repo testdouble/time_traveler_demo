@@ -1,0 +1,33 @@
+<h1>🌜 Moon Landing Tracker! 🌛</h1>
+
+<h2>New Moon Landing</h2>
+<%= form_with model: MoonLanding.new do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, required: true %>
+  <%= f.submit %>
+<% end %>
+
+<% if @moon_landings.present? %>
+  <h2>Other Moon Landings</h2>
+  <ul>
+    <% @moon_landings.each do |moon_landing| %>
+      <li>
+        <strong><%= moon_landing.name %></strong> on <%= moon_landing.landed_at.strftime("%Y-%m-%d") %>
+        <% if (Time.zone.now - moon_landing.landed_at) > 0 %>
+          (<%= distance_of_time_in_words(moon_landing.landed_at, Time.zone.now) %> ago)
+        <% else %>
+          (in <%= distance_of_time_in_words(moon_landing.landed_at, Time.zone.now) %>)
+        <% end %>
+        <%= button_to "Delete", moon_landing_path(moon_landing), method: :delete %>
+
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<small>
+  RB time is <%= Time.zone.now.to_fs(:db) %>
+  <br/>
+  DB time is <%= ActiveRecord::Base.connection.execute("select nowish()").first["nowish"].to_fs(:db) %>
+</small>
+

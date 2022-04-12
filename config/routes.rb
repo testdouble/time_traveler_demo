@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :pets
+  resources :moon_landings
 
-  root "pets#index"
+  root "moon_landings#index"
 end

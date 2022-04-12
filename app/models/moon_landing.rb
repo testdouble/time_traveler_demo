@@ -1,0 +1,2 @@
+class MoonLanding < ApplicationRecord
+end

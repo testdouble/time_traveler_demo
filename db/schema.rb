@@ -14,9 +14,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_11_155137) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "pets", force: :cascade do |t|
+  create_table "moon_landings", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "born_at", default: -> { "nowish()" }, null: false
+    t.datetime "landed_at", default: -> { "nowish()" }, null: false
   end
 
   create_table "system_configurations", force: :cascade do |t|
