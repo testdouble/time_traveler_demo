@@ -1,5 +1,7 @@
 # Postgres Time Traveling Demo
 
+This example application is a companion to [this blog post about faking time in Postgres](https://blog.testdouble.com/posts/2022-04-19-how-to-fake-time-in-a-postgres-database/)
+
 ## Getting started
 
 To get started, clone the repo and run:
